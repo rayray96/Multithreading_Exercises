@@ -44,7 +44,7 @@ namespace SecondTaskUI
             //          To achieve thread-safety, these new types use various kinds of efficient locking and lock-free synchronization mechanisms.
             //
             //      o users can only operate with items in collection
-            // Answer:  We can use BlockingCollection<T> is a thread-safe collection class that provides the following features:
+            // Answer:  We can use BlockingCollection<T> - it is a thread-safe collection class that provides the following features:
             //          * An implementation of the Producer - Consumer pattern.
             //          * Concurrent adding and taking of items from multiple threads.
             //          * Optional maximum capacity.
