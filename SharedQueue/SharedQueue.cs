@@ -37,7 +37,7 @@ namespace SharedQueue
         {
             lock (_locker)
             {
-                if (_queue.Count == 0)
+                while (_queue.Count == 0)
                 {
                     Monitor.Wait(_locker);
                 }

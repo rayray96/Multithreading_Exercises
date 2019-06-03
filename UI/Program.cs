@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading;
+using System.Threading.Tasks;
 using SharedQueue;
 
 namespace UI
@@ -7,38 +8,32 @@ namespace UI
     class Program
     {
         static SharedQueue<string> sharedQueue = new SharedQueue<string>();
+        static int i = 0;
+        static AutoResetEvent autoEvent = new AutoResetEvent(false);
 
         static void Main(string[] args)
         {
-            Produce();
-            Consume();
+            new Timer(Produce, autoEvent, 10, 300);
+            new Timer(Consume, autoEvent, 12, 100);
+            autoEvent.WaitOne();
         }
 
-        static void Produce()
+        static void Produce(object obj)
         {
-            var thread = new Thread(() =>
+            Task.Run(() =>
             {
-                for (int i = 0; i < 10; i++)
-                {
-                    sharedQueue.Enqueue($"Product #{i}");
-                    Console.WriteLine($"Thread #{Thread.CurrentThread.ManagedThreadId} produces the Product #{i}");
-                    Thread.Sleep(500);
-                }
+                Interlocked.Increment(ref i);
+                sharedQueue.Enqueue($"Product #{i}");
+                Console.WriteLine($"Thread #{Thread.CurrentThread.ManagedThreadId} produces the Product #{i}");
             });
-            thread.Start();
         }
 
-        static void Consume()
+        static void Consume(object obj)
         {
-            var thread = new Thread(() =>
+            Task.Run(() =>
             {
-                for (int i = 0; i < 12; i++)
-                {
-                    Console.WriteLine($"Thread #{Thread.CurrentThread.ManagedThreadId} consumes the {sharedQueue.Dequeue()}");
-                    Thread.Sleep(100);
-                }
+                Console.WriteLine($"Thread #{Thread.CurrentThread.ManagedThreadId} consumes the {sharedQueue.Dequeue()}");
             });
-            thread.Start();
         }
     }
 }
