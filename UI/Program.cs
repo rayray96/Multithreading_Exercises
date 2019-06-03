@@ -20,20 +20,14 @@ namespace UI
 
         static void Produce(object obj)
         {
-            Task.Run(() =>
-            {
-                Interlocked.Increment(ref i);
-                sharedQueue.Enqueue($"Product #{i}");
-                Console.WriteLine($"Thread #{Thread.CurrentThread.ManagedThreadId} produces the Product #{i}");
-            });
+            Interlocked.Increment(ref i);
+            sharedQueue.Enqueue($"Product #{i}");
+            Console.WriteLine($"Thread #{Thread.CurrentThread.ManagedThreadId} produces the Product #{i}");
         }
 
         static void Consume(object obj)
         {
-            Task.Run(() =>
-            {
-                Console.WriteLine($"Thread #{Thread.CurrentThread.ManagedThreadId} consumes the {sharedQueue.Dequeue()}");
-            });
+            Console.WriteLine($"Thread #{Thread.CurrentThread.ManagedThreadId} consumes the {sharedQueue.Dequeue()}");
         }
     }
 }
