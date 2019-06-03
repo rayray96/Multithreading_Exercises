@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Threading;
-using System.Threading.Tasks;
 using SharedQueue;
 
 namespace UI
 {
     class Program
     {
+        static AutoResetEvent autoEvent = new AutoResetEvent(false);
         static SharedQueue<string> sharedQueue = new SharedQueue<string>();
         static int i = 0;
-        static AutoResetEvent autoEvent = new AutoResetEvent(false);
 
         static void Main(string[] args)
         {
